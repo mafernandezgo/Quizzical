@@ -1,38 +1,151 @@
 .App {
+  font-family: 'Inter', sans-serif;
+  font-family: 'Karla', sans-serif;
   text-align: center;
+  width: 100vw;
+  height: 100vh;
+  place-items: center;
+  display: grid;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.bgYellow{
+  position: absolute;
+  right: -150px;
+  top: -150px;
+  background-color: #FFFAD1;
+  height: 300px;
+  width: 350px;
+  overflow: hidden;
+  transform: rotate(45deg);
+  border-radius: 80px;
+  z-index: 1;
+  animation: example 3s infinite;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.bgBlue{
+  position: absolute;
+  left: -100px;
+  bottom: -90px;
+  background-color: #DEEBF8;
+  height: 250px;
+  width: 300px;
+  border-radius: 80px;
+  transform: rotate(-10deg);
+  z-index: 1;
+  animation: example 3s infinite;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.AppMain{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  display: grid;
+  background-color: #F5F7FB;
+}
+
+.quizTitle{
+  font-size: 5em;
+}
+
+.quizDescription{
+  font-size: 2em ;
+}
+
+.quizQuestion{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: flex-start;
+}
+
+.quizQuestion > h3{
+  margin: 10px;
+}
+
+.button{
+  background-color: #4D5B9E;
   color: white;
+  border: none;
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+.btnStart{
+  width: 200px;
+  height: 50px;
+  font-size: 1.5em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.answersList{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* text-overflow:clip */
+  max-width: 1000px;
+  z-index: 2
+}
+
+.answerBtn{
+  font-family: 'Inter', sans-serif;;
+  font-size: 1em;
+  border-radius: 16px;
+  border: 2px solid #4D5B9E;
+  background-color: white;
+  padding: 8px;
+  margin: 10px;
+  color: #293264;
+  min-width: 100px;
+  position: relative;
+  cursor: pointer;
+  /* transition: all 0.1s ease-in-out; */
+}
+
+.answerBtn:active{
+  border: 2px solid #FFFAD1;
+}
+
+.answerBtn:active::after{
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #FFFAD1;
+  left:0;
+  top:-1px;
+  border-radius: 16px;
+}
+
+.answerBtn.selected.wrong{
+  background-color :#F8BCBC;
+  border: 2px solid #F8BCBC;
+}
+.answerBtn.correct{
+  background-color :#c5e1a5;
+  border: 2px solid #c5e1a5;
+}
+
+.answerBtn.selected{
+  transition: all 2s ease-in-out;
+  background-color: #D6DBF5;
+  border: 2px solid transparent;
+}
+
+.btnCheckAnswers{
+  width: 120px;
+  height: 40px;
+  margin: 20px;
+}
+
+hr{
+  border: 0.5px solid #D6DBF5;
+  width: 100%;
+  margin: 10px 0px;
+}
+
+@keyframes example {
+  0% {transform: rotate(0);}
+  50% {transform: rotate(20deg);}
+  100%{transform: rotate(0deg);}
 }
