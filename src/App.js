@@ -1,26 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-import MainPage from './Components/MainPage';
-import QuizPage from './Components/QuizPage';
-import { useState } from 'react';
+import logo from './logo.svg'
+import './App.css'
+import MainPage from './Components/MainPage'
+import QuizPage from './Components/QuizPage'
+import { useState } from 'react'
 
 function App() {
   const [isOnMainPage, setIsOnMainPage] = useState(true)
 
-  function clickHandler (){
+  function clickHandler() {
     setIsOnMainPage(!isOnMainPage)
-}
+  }
   return (
     <div className="App">
       <main className="AppMain">
         <div className="bgYellow"></div>
         <div className="bgBlue"></div>
-        {isOnMainPage ?
-        <MainPage clickHandler={clickHandler} />:
-        <QuizPage/>}
+        {isOnMainPage ? (
+          <MainPage clickHandler={clickHandler} />
+        ) : (
+          <QuizPage
+            isOnMainPage={isOnMainPage}
+            setIsOnMainPage={setIsOnMainPage}
+          />
+        )}
       </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

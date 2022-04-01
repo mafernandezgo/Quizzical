@@ -1,55 +1,56 @@
-	import { nanoid } from "nanoid"
-	import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 
-export default function Question(props) {
-	const [answers, setAnswers] = useState(props.answers[1])
+export default function Question({
+  answers,
+  onClickAnswer,
+  question,
+  selectedAnswer,
+  showAnswer,
+}) {
+  const [answersSorted, setAnswersSorted] = useState(answers)
 
-	function test(id) {
-	setAnswers((prevAnswers) =>
-		prevAnswers.map((answer) => {
-		return answer.answer == id
-			? { ...answer, isSelected: !answer.isSelected }
-			: answer
-		})
-	)
-	}
+  useEffect(() => {
+    setAnswersSorted((prev) => {
+      return prev
+        .map((answer) => ({ ...answer, order: Math.random() - 0.5 }))
+        .sort(({ order }) => order)
+    })
+  }, [])
 
-	let answersArray = answers.map((x) => {
-	let answer = x.answer.replaceAll("&#039;", "'").replaceAll("&quot;", '"')
-	console.log(x.isCorrect, x.isSelected)
+  function generateAnswer({ answer, isCorrect }) {
+    const currentSelected = selectedAnswer === answer
+    const className = ['answerBtn']
 
+    if (currentSelected) {
+      className.push('selected')
+    }
 
-	// function letClas (correct, selected, check){
-	// 	if (correct === true && check === true){
-	// 		"correct"
-	// 	} else if( correct === false && selected === true && check === true){
-	// 		"wrong"
-	// 	} else( "" )
-	// }
+    if (isCorrect && showAnswer) {
+      className.push('correct')
+    }
 
-	return (
-		<button
-		onClick={() => test(x.answer)}
-		key={nanoid()}
-		className={`answerBtn ${x.isSelected ? "selected" : ""} ${x.isCorrect && x.isSelected && props.correctAnswers ? "correct":""}`}>
-		{answer}
-		</button>
-	)
-	})
+    if (isCorrect && currentSelected && showAnswer) {
+      className.push('correct')
+    } else if (!isCorrect && currentSelected && showAnswer) {
+      className.push('wrong')
+    }
 
-	useEffect(() => {
-	setAnswers((prev) =>
-		prev.concat(props.answers[0]).sort(() => Math.random() - 0.5)
-	)
-	}, [])
+    return (
+      <button
+        onClick={() => onClickAnswer(answer)}
+        key={answer}
+        className={className.join(' ')}
+      >
+        {answer.replaceAll('&#039;', "'").replaceAll('&quot;', '"')}
+      </button>
+    )
+  }
 
-	return (
-	<div className="quizQuestion" key={props.question}>
-		<h3>
-		{props.question.replaceAll("&#039;", "'").replaceAll("&quot;", '"')}
-		</h3>
-		<div className="answersList">{answersArray}</div>
-		<hr />
-	</div>
-	)	
+  return (
+    <div className="quizQuestion" key={question}>
+      <h3>{question.replaceAll('&#039;', "'").replaceAll('&quot;', '"')}</h3>
+      <div className="answersList">{answersSorted.map(generateAnswer)}</div>
+      <hr />
+    </div>
+  )
 }
