@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 import Question from './Question'
 
-export default function QuizPage({ setIsOnMainPage }) {
+export default function QuizPage({ inputData, PlayAgain }) {
   const [questionArray, setQuestionArray] = useState([])
   const [showAnswer, setShowAnswer] = useState(false)
   const [answersArray, setAnswersArray] = useState([])
-  // const [selectedAnswer, setSelectedAnswer] = useState([])
 
   useEffect(() => {
-    fetch('https://opentdb.com/api.php?amount=5&category=10&type=multiple')
+    fetch(
+      `https://opentdb.com/api.php?amount=${inputData.numberOfQuestions}&category=${inputData.category}&type=multiple`
+    )
       .then((response) => response.json())
       .then((data) => {
         setQuestionArray(
@@ -29,8 +30,6 @@ export default function QuizPage({ setIsOnMainPage }) {
     )
   }
 
-  console.log(answersArray)
-
   const questionList = questionArray.map((question) => {
     const answers = [
       {
@@ -50,12 +49,18 @@ export default function QuizPage({ setIsOnMainPage }) {
         showAnswer={showAnswer}
         question={question.question}
         onClickAnswer={(answer) =>
-          setQuestionArray((prevValue) => [
-            ...prevValue,
-            { ...question, selectedAnswer: answer },
-          ])
+          setQuestionArray((prevValue) =>
+            prevValue.map((q) => {
+              if (q.question === question.question) {
+                return q.question === question.question
+                  ? { ...q, selectedAnswer: answer }
+                  : q
+              } else {
+                return q
+              }
+            })
+          )
         }
-        // Set selected answer in the correct question
         key={question.question}
       />
     )
@@ -71,10 +76,7 @@ export default function QuizPage({ setIsOnMainPage }) {
       ) : (
         <div className="bottomBar">
           <p>{`You score ${answersArray.length}/${questionArray.length} correct answers`}</p>
-          <button
-            onClick={() => setIsOnMainPage(true)}
-            className="button btnCheckAnswers"
-          >
+          <button onClick={PlayAgain} className="button btnCheckAnswers">
             {' '}
             Play Again{' '}
           </button>

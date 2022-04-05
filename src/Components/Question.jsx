@@ -27,19 +27,17 @@ export default function Question({
 
     if (isCorrect && showAnswer) {
       className.push('correct')
-    }
-
-    if (isCorrect && currentSelected && showAnswer) {
-      className.push('correct')
     } else if (!isCorrect && currentSelected && showAnswer) {
       className.push('wrong')
+    } else if (showAnswer) {
+      className.push('show')
     }
 
     return (
       <button
         onClick={() => onClickAnswer(answer)}
         key={answer}
-        className={className.join(' ')}
+        className={`${className.join(' ')}`}
       >
         {answer.replaceAll('&#039;', "'").replaceAll('&quot;', '"')}
       </button>
